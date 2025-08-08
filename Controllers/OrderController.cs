@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LogiTrack.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LogiTrack.Controllers
 {
@@ -38,6 +39,7 @@ namespace LogiTrack.Controllers
             return order;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder(Order order)
         {
@@ -46,6 +48,8 @@ namespace LogiTrack.Controllers
             return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, order);
         }
 
+
+        [Authorize(Roles = "Manager")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteOrder(int id)
         {

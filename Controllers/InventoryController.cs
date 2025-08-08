@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using LogiTrack.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LogiTrack.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class InventoryController : ControllerBase
@@ -21,6 +23,7 @@ namespace LogiTrack.Controllers
             return await _context.InventoryItems.ToListAsync();
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public async Task<ActionResult<InventoryItem>> AddInventoryItem(InventoryItem item)
         {
