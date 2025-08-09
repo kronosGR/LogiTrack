@@ -21,7 +21,16 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
+    /// <summary>
+    /// Registers a new user.
+    /// </summary>
+    /// <param name="model">The registration model.</param>
+    /// <returns>A success message or error details.</returns>
+    /// <response code="200">User registered successfully.</response>
+    /// <response code="400">Invalid request or validation errors.</response>
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
         if (!ModelState.IsValid)
@@ -50,7 +59,18 @@ public class AuthController : ControllerBase
         return Ok("User registered successfully");
     }
 
+    /// <summary>
+    /// Logs in an existing user.
+    /// </summary>
+    /// <param name="model">The login model.</param>
+    /// <returns>A JWT token or error message.</returns>
+    /// <response code="200">User logged in successfully.</response>
+    /// <response code="401">Invalid username or password.</response>
+    /// <response code="400">Invalid request or validation errors.</response>
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
         if (!ModelState.IsValid)
@@ -94,22 +114,37 @@ public class AuthController : ControllerBase
 
 public class RegisterModel
 {
+    /// <summary>
+    /// The username of the user.
+    /// </summary>
     [Required]
     public string Username { get; set; }
 
+    /// <summary>
+    /// The email address of the user.
+    /// </summary>
     [Required]
     [EmailAddress]
     public string Email { get; set; }
 
+    /// <summary>
+    /// The password of the user.
+    /// </summary>
     [Required]
     public string Password { get; set; }
 }
 
 public class LoginModel
 {
+    /// <summary>
+    /// The username of the user.
+    /// </summary>
     [Required]
     public string Username { get; set; }
 
+    /// <summary>
+    /// The password of the user.
+    /// </summary>
     [Required]
     public string Password { get; set; }
 }
